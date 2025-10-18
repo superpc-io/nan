@@ -1,9 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岡部暗号Web版（TXT版）</title>
+<style>
+body { font-family: "Yu Gothic UI", sans-serif; background:#0f172a; color:#e2e8f0; text-align:center; padding:30px;}
+textarea { width:80%; height:120px; background:#1e293b; color:#fff; border:none; border-radius:8px; padding:10px; font-size:16px;}
+button { margin:8px; background:#38bdf8; border:none; border-radius:8px; padding:10px 20px; color:#000; font-weight:bold; cursor:pointer;}
+#output { margin-top:20px; background:#1e293b; padding:15px; border-radius:8px; width:80%; margin-inline:auto; white-space:pre-wrap;}
+small { color:#94a3b8; }
+</style>
+</head>
+<body>
+<h1>🔐 岡部暗号Web版（TXT版）</h1>
+<p>TXT暗号表から読み込み、ひらがな全音＋濁音・半濁音・拗音・英数字・記号に対応！</p>
+
+<textarea id="input" placeholder="ここに文章を入力"></textarea><br>
+<button onclick="encrypt()">暗号化！</button>
+<button onclick="decrypt()">解読！</button>
+
+<div id="output"></div>
+<p><small>未登録文字は u: プレフィックス付きで出力。</small></p>
+
 <script>
 let table = {};
 let reverseTable = {};
 
 async function loadCipherTable() {
-  const res = await fetch('cipher_table.txt');
+  const res = await fetch('cipher_table.txt'); // 同じフォルダにTXTを置く
   const text = await res.text();
   
   table = {};
@@ -42,4 +67,5 @@ function decrypt() {
   document.getElementById("output").innerText = "🔓 解読結果：\n" + result;
 }
 </script>
-
+</body>
+</html>
