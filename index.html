@@ -1,1 +1,45 @@
+<script>
+let table = {};
+let reverseTable = {};
+
+async function loadCipherTable() {
+  const res = await fetch('cipher_table.txt');
+  const text = await res.text();
+  
+  table = {};
+  text.split('\n').forEach(line => {
+    line = line.trim();
+    if (!line) return;
+    const [key, value] = line.split('=');
+    table[key] = value;
+  });
+  
+  reverseTable = {};
+  for (let ch in table) reverseTable[table[ch]] = ch;
+}
+
+window.onload = loadCipherTable;
+
+function encrypt() {
+  const text = document.getElementById("input").value;
+  let result = [];
+  for (let ch of text) {
+    if (table[ch]) result.push(table[ch]);
+    else result.push("u:" + encodeURIComponent(ch));
+  }
+  document.getElementById("output").innerText = "🔒 暗号文：\n" + result.join(" ");
+}
+
+function decrypt() {
+  const text = document.getElementById("input").value.trim();
+  const words = text.split(/\s+/);
+  let result = "";
+  for (let w of words) {
+    if (reverseTable[w]) result += reverseTable[w];
+    else if (w.startsWith("u:")) result += decodeURIComponent(w.slice(2));
+    else result += w;
+  }
+  document.getElementById("output").innerText = "🔓 解読結果：\n" + result;
+}
+</script>
 
